@@ -35,7 +35,7 @@ ScreenBase::~ScreenBase()
 void ScreenBase::create()
 {
     // Create OSMesa context
-    const GLenum format = OSMESA_RGB;
+    const GLenum format = OSMESA_RGBA;
     const GLint depth_bits = 24;
     const GLint stencil_bits = 0;
     const GLint accum_bits = 0;
@@ -49,7 +49,7 @@ void ScreenBase::create()
     // Allocate memory for the buffer
     const GLsizei width = GLsizei( BaseClass::width() );
     const GLsizei height = GLsizei( BaseClass::height() );
-    m_buffer.allocate( width * height * 3 );
+    m_buffer.allocate( width * height * 4 );
 
     // Bind the buffer to the context
     if ( !OSMesaMakeCurrent( m_context, m_buffer.data(), GL_UNSIGNED_BYTE, width, height) )
@@ -57,6 +57,8 @@ void ScreenBase::create()
         kvsMessageError( "Cannot bind buffer." );
         return;
     }
+
+    OSMesaPixelStore( OSMESA_Y_UP, 0 ); // Y coordinates increase downward
 }
 
 void ScreenBase::draw()
@@ -78,8 +80,17 @@ kvs::ColorImage ScreenBase::capture() const
 {
     const size_t width = BaseClass::width();
     const size_t height = BaseClass::height();
-    kvs::ColorImage ret( width, height, m_buffer );
-    return ret;
+
+    // RGBA to RGB
+    kvs::ValueArray<kvs::UInt8> pixels( width * height * 3 );
+    for ( size_t i = 0; i < width * height; i++ )
+    {
+      pixels[ 3 * i + 0 ] = m_buffer[ 4 * i + 0 ];
+      pixels[ 3 * i + 1 ] = m_buffer[ 4 * i + 1 ];
+      pixels[ 3 * i + 2 ] = m_buffer[ 4 * i + 2 ];
+    }
+
+    return kvs::ColorImage( width, height, pixels );
 }
 
 } // end of namespace osmesa

@@ -1,6 +1,7 @@
 #include "ScreenBase.h"
 #include <kvs/ColorImage>
 #include <kvs/OpenGL>
+#include <kvs/InitializeEvent>
 #include <kvs/PaintEvent>
 #include <kvs/EventHandler>
 
@@ -59,12 +60,19 @@ void ScreenBase::create()
     }
 
     OSMesaPixelStore( OSMESA_Y_UP, 0 ); // Y coordinates increase downward
+
+    // Initialize function.
+    m_scene->initializeFunction();
+
+    kvs::InitializeEvent event;
+    BaseClass::eventHandler()->notify( &event );
 }
 
 void ScreenBase::draw()
 {
     if ( !m_context ) { this->create(); }
 
+    // Paint function.
     kvs::OpenGL::WithPushedMatrix p( GL_MODELVIEW );
     p.loadIdentity();
     {
@@ -85,9 +93,9 @@ kvs::ColorImage ScreenBase::capture() const
     kvs::ValueArray<kvs::UInt8> pixels( width * height * 3 );
     for ( size_t i = 0; i < width * height; i++ )
     {
-      pixels[ 3 * i + 0 ] = m_buffer[ 4 * i + 0 ];
-      pixels[ 3 * i + 1 ] = m_buffer[ 4 * i + 1 ];
-      pixels[ 3 * i + 2 ] = m_buffer[ 4 * i + 2 ];
+        pixels[ 3 * i + 0 ] = m_buffer[ 4 * i + 0 ];
+        pixels[ 3 * i + 1 ] = m_buffer[ 4 * i + 1 ];
+        pixels[ 3 * i + 2 ] = m_buffer[ 4 * i + 2 ];
     }
 
     return kvs::ColorImage( width, height, pixels );

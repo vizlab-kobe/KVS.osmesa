@@ -22,7 +22,8 @@ int main( int argc, char** argv )
     kvs::PolygonObject* object = new kvs::Isosurface( volume, i, n, d, t );
     delete volume;
 
-    kvs::glsl::PolygonRenderer* renderer = new kvs::glsl::PolygonRenderer();
+    //    kvs::glsl::PolygonRenderer* renderer = new kvs::glsl::PolygonRenderer();
+    kvs::PolygonRenderer* renderer = new kvs::PolygonRenderer();
 
     kvs::osmesa::ScreenBase screen;
     screen.scene()->registerObject( object, renderer );

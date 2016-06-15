@@ -1,6 +1,6 @@
 #include <iostream>
 #include "OSMesa.h"
-#include "ScreenBase.h"
+#include "Screen.h"
 
 #include <kvs/StructuredVolumeObject>
 #include <kvs/StructuredVolumeImporter>
@@ -35,7 +35,8 @@ int main( int argc, char** argv )
     kvs::PolygonRenderer* renderer = new kvs::PolygonRenderer();
 */
     kvs::StructuredVolumeObject* object = volume;
-    kvs::glsl::RayCastingRenderer* renderer = new kvs::glsl::RayCastingRenderer();
+//    kvs::glsl::RayCastingRenderer* renderer = new kvs::glsl::RayCastingRenderer();
+    kvs::RayCastingRenderer* renderer = new kvs::RayCastingRenderer();
 /*
     kvs::TransferFunction tfunc( 256 );
     kvs::PointObject* object = new kvs::CellByCellUniformSampling( volume, 2, 0.5, tfunc );
@@ -43,12 +44,12 @@ int main( int argc, char** argv )
     kvs::glsl::ParticleBasedRenderer* renderer = new kvs::glsl::ParticleBasedRenderer();
     renderer->setRepetitionLevel( 4 );
 */
-
-    kvs::osmesa::ScreenBase screen;
-    screen.scene()->registerObject( object, renderer );
+    kvs::osmesa::Screen screen;
     screen.setGeometry( 0, 0, 512, 512 );
+    screen.registerObject( object, renderer );
 
-    screen.create();
+    object->multiplyXform( kvs::Xform::Rotation( kvs::Mat3::RotationY( 30 ) ) );
+
     screen.draw();
     screen.capture().write("output.bmp");
 

@@ -1,9 +1,6 @@
 #include "ScreenBase.h"
 #include <kvs/ColorImage>
 #include <kvs/OpenGL>
-#include <kvs/InitializeEvent>
-#include <kvs/PaintEvent>
-#include <kvs/EventHandler>
 
 
 namespace kvs
@@ -13,8 +10,7 @@ namespace osmesa
 {
 
 ScreenBase::ScreenBase():
-    m_context( NULL ),
-    m_scene( new kvs::Scene() )
+    m_context( NULL )
 {
 }
 
@@ -25,12 +21,29 @@ ScreenBase::~ScreenBase()
         OSMesaDestroyContext( m_context );
         m_context = NULL;
     }
+}
 
-    if ( m_scene )
+kvs::ColorImage ScreenBase::capture() const
+{
+    const size_t width = BaseClass::width();
+    const size_t height = BaseClass::height();
+
+    // RGBA to RGB
+    kvs::ValueArray<kvs::UInt8> pixels( width * height * 3 );
+    for ( size_t i = 0; i < width * height; i++ )
     {
-        delete m_scene;
-        m_scene = NULL;
+        pixels[ 3 * i + 0 ] = m_buffer[ 4 * i + 0 ];
+        pixels[ 3 * i + 1 ] = m_buffer[ 4 * i + 1 ];
+        pixels[ 3 * i + 2 ] = m_buffer[ 4 * i + 2 ];
     }
+
+    return kvs::ColorImage( width, height, pixels );
+}
+
+void ScreenBase::draw()
+{
+    if ( !m_context ) { this->create(); }
+    this->paintEvent();
 }
 
 void ScreenBase::create()
@@ -51,6 +64,7 @@ void ScreenBase::create()
     const GLsizei width = GLsizei( BaseClass::width() );
     const GLsizei height = GLsizei( BaseClass::height() );
     m_buffer.allocate( width * height * 4 );
+    m_buffer.fill( 0 );
 
     // Bind the buffer to the context
     if ( !OSMesaMakeCurrent( m_context, m_buffer.data(), GL_UNSIGNED_BYTE, width, height) )
@@ -61,44 +75,17 @@ void ScreenBase::create()
 
     OSMesaPixelStore( OSMESA_Y_UP, 0 ); // Y coordinates increase downward
 
-    // Initialize function.
-    m_scene->initializeFunction();
-
-    kvs::InitializeEvent event;
-    BaseClass::eventHandler()->notify( &event );
+    this->initializeEvent();
 }
 
-void ScreenBase::draw()
+void ScreenBase::show()
 {
     if ( !m_context ) { this->create(); }
-
-    // Paint function.
-    kvs::OpenGL::WithPushedMatrix p( GL_MODELVIEW );
-    p.loadIdentity();
-    {
-        m_scene->paintFunction();
-        kvs::PaintEvent event;
-        BaseClass::eventHandler()->notify( &event );
-    }
-
-    kvs::OpenGL::Flush();
 }
 
-kvs::ColorImage ScreenBase::capture() const
+void ScreenBase::redraw()
 {
-    const size_t width = BaseClass::width();
-    const size_t height = BaseClass::height();
-
-    // RGBA to RGB
-    kvs::ValueArray<kvs::UInt8> pixels( width * height * 3 );
-    for ( size_t i = 0; i < width * height; i++ )
-    {
-        pixels[ 3 * i + 0 ] = m_buffer[ 4 * i + 0 ];
-        pixels[ 3 * i + 1 ] = m_buffer[ 4 * i + 1 ];
-        pixels[ 3 * i + 2 ] = m_buffer[ 4 * i + 2 ];
-    }
-
-    return kvs::ColorImage( width, height, pixels );
+    this->draw();
 }
 
 } // end of namespace osmesa

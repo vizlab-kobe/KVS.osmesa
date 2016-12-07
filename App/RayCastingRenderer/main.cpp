@@ -1,11 +1,11 @@
 #include <iostream>
+#include <KVS.osmesa/Lib/OSMesa.h>
+#include <KVS.osmesa/Lib/Screen.h>
 #include <kvs/StructuredVolumeObject>
 #include <kvs/StructuredVolumeImporter>
 #include <kvs/RayCastingRenderer>
 #include <kvs/HydrogenVolumeData>
 #include <kvs/TransferFunction>
-#include <KVS.osmesa/Lib/OSMesa.h>
-#include <KVS.osmesa/Lib/Screen.h>
 
 
 int main( int argc, char** argv )

@@ -2,7 +2,6 @@
 
 #include <string>
 #include <kvs/String>
-
 #include <GL/osmesa.h>
 
 

@@ -9,6 +9,7 @@
 #include <kvs/Tubeline>
 #include "CubicImages.h"
 #include "CubeMapImage.h"
+#include "SphericalMapImage.h"
 
 kvs::PolygonObject* GenerateStreamlines()
 {
@@ -55,13 +56,15 @@ int main( int argc, char** argv )
     screen.registerObject( object );
 
     // Camera position in world coordinate system
-    kvs::Vec3 p( 0.0f, 0.0f, 0.0f );
+//    kvs::Vec3 p( 0.0f, 0.0f, 12.0f );
+    kvs::Vec3 p( 0.0f, 0.0f, 2.5f );
     {
         CubicImages cubic_images;
         cubic_images.draw( screen, p );
         cubic_images.write( "output" );
 
-        kvs::ColorImage image = CubeMapImage( cubic_images );
+//        kvs::ColorImage image = CubeMapImage( cubic_images );
+        kvs::ColorImage image = SphericalMapImage( cubic_images );
         image.write( "output.bmp" );
     }
 

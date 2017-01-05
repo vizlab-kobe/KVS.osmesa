@@ -5,8 +5,8 @@
 
 kvs::ColorImage SphericalMapImage( const CubicImages& cubic_images )
 {
-    const size_t w = cubic_images.front().width();
-    const size_t h = cubic_images.front().height();
+    const size_t w = cubic_images.frontImage().width();
+    const size_t h = cubic_images.frontImage().height();
 
     kvs::ColorImage result( w * 4, h * 3 );
 
@@ -34,39 +34,39 @@ kvs::ColorImage SphericalMapImage( const CubicImages& cubic_images )
             {
                 const int si = kvs::Math::Abs( int( ( ( za + 1.0f ) / 2.0f - 1.0f ) * ( w - 1 ) ) );
                 const int sj = kvs::Math::Abs( int( ( ( ya + 1.0f ) / 2.0f ) * ( h - 1 ) ) );
-                pixel = cubic_images.right().pixel( si, sj );
+                pixel = cubic_images.rightImage().pixel( si, sj );
             }
             else if ( xa == -1 )
             {
                 const int si = kvs::Math::Abs( int( ( ( za + 1.0f ) / 2.0f ) * ( w - 1 ) ) );
                 const int sj = kvs::Math::Abs( int( ( ( ya + 1.0f ) / 2.0f ) * ( h - 1 ) ) );
-                pixel = cubic_images.left().pixel( si, sj );
+                pixel = cubic_images.leftImage().pixel( si, sj );
             }
             else if ( ya == 1 )
             {
                 const int si = kvs::Math::Abs( int( ( ( xa + 1.0f ) / 2.0f ) * ( w - 1 ) ) );
                 const int sj = kvs::Math::Abs( int( ( ( za + 1.0f ) / 2.0f - 1.0f ) * ( h - 1 ) ) );
-//                pixel = cubic_images.top().pixel( si, sj );
-                pixel = cubic_images.bottom().pixel( si, sj );
+//                pixel = cubic_images.topImage().pixel( si, sj );
+                pixel = cubic_images.bottomImage().pixel( si, sj );
             }
             else if ( ya == -1 )
             {
                 const int si = kvs::Math::Abs( int( ( ( xa + 1.0f ) / 2.0f ) * ( w - 1 ) ) );
                 const int sj = kvs::Math::Abs( int( ( ( za + 1.0f ) / 2.0f ) * ( h - 1 ) ) );
-//                pixel = cubic_images.bottom().pixel( si, sj );
-                pixel = cubic_images.top().pixel( si, sj );
+//                pixel = cubic_images.bottomImage().pixel( si, sj );
+                pixel = cubic_images.topImage().pixel( si, sj );
             }
             else if ( za == 1 )
             {
                 const int si = kvs::Math::Abs( int( ( ( xa + 1.0f ) / 2.0f ) * ( w - 1 ) ) );
                 const int sj = kvs::Math::Abs( int( ( ( ya + 1.0f ) / 2.0f ) * ( h - 1 ) ) );
-                pixel = cubic_images.front().pixel( si, sj );
+                pixel = cubic_images.frontImage().pixel( si, sj );
             }
             else if ( za == -1 )
             {
                 const int si = kvs::Math::Abs( int( ( ( xa + 1.0f ) / 2.0f - 1.0f ) * ( w - 1 ) ) );
                 const int sj = kvs::Math::Abs( int( ( ( ya + 1.0f ) / 2.0f ) * ( h - 1 ) ) );
-                pixel = cubic_images.back().pixel( si, sj );
+                pixel = cubic_images.backImage().pixel( si, sj );
             }
             result.setPixel( i, j, pixel );
         }

@@ -27,16 +27,16 @@ inline void Draw(
 
 kvs::ColorImage CubeMapImage( const CubicImages& cubic_images )
 {
-    const size_t w = cubic_images.front().width();
-    const size_t h = cubic_images.front().height();
+    const size_t w = cubic_images.frontImage().width();
+    const size_t h = cubic_images.frontImage().height();
 
     kvs::ColorImage result( w * 4, h * 3 );
-    ::Draw( cubic_images.top(), w, 0, result );
-    ::Draw( cubic_images.left(), 0, h, result );
-    ::Draw( cubic_images.front(), w, h, result );
-    ::Draw( cubic_images.right(), w * 2, h, result );
-    ::Draw( cubic_images.back(), w * 3, h, result );
-    ::Draw( cubic_images.bottom(), w, h * 2, result );
+    ::Draw( cubic_images.topImage(), w, 0, result );
+    ::Draw( cubic_images.leftImage(), 0, h, result );
+    ::Draw( cubic_images.frontImage(), w, h, result );
+    ::Draw( cubic_images.rightImage(), w * 2, h, result );
+    ::Draw( cubic_images.backImage(), w * 3, h, result );
+    ::Draw( cubic_images.bottomImage(), w, h * 2, result );
 
     return result;
 }

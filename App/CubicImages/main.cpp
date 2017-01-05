@@ -13,11 +13,14 @@
 
 kvs::PolygonObject* GenerateStreamlines()
 {
-    kvs::StructuredVolumeObject* volume = new kvs::TornadoVolumeData( kvs::Vec3u( 16, 16, 16 ) );
+//    kvs::StructuredVolumeObject* volume = new kvs::TornadoVolumeData( kvs::Vec3u::All( 16 ) );
+    kvs::StructuredVolumeObject* volume = new kvs::TornadoVolumeData( kvs::Vec3u::All( 32 ) );
 
     std::vector<kvs::Real32> v;
-    kvs::Vec3i min_coord( 7, 7,  0 );
-    kvs::Vec3i max_coord( 10, 10, 15 );
+//    kvs::Vec3i min_coord( 7, 7,  0 );
+//    kvs::Vec3i max_coord( 10, 10, 15 );
+    kvs::Vec3i min_coord( 17, 17, 10 );
+    kvs::Vec3i max_coord( 19, 19, 25 );
     for ( int k = min_coord.z(); k < max_coord.z(); k++ )
     {
         for ( int j = min_coord.y(); j < max_coord.y(); j++ )
@@ -40,7 +43,7 @@ kvs::PolygonObject* GenerateStreamlines()
     delete point;
     delete volume;
 
-    const size_t ndivs = 20;
+    const size_t ndivs = 50;
     kvs::PolygonObject* object = new kvs::Tubeline( line, ndivs );
     delete line;
 
@@ -57,15 +60,18 @@ int main( int argc, char** argv )
 
     // Camera position in world coordinate system
 //    kvs::Vec3 p( 0.0f, 0.0f, 12.0f );
-    kvs::Vec3 p( 0.0f, 0.0f, 2.5f );
+//    kvs::Vec3 p( 0.0f, 0.0f, 2.0f );
+//    kvs::Vec3 p( 0.0f, 0.0f, 3.0f );
+    kvs::Vec3 p( 0.0f, 0.0f, 0.0f );
     {
         CubicImages cubic_images;
         cubic_images.draw( screen, p );
-        cubic_images.write( "output" );
 
-//        kvs::ColorImage image = CubeMapImage( cubic_images );
-        kvs::ColorImage image = SphericalMapImage( cubic_images );
-        image.write( "output.bmp" );
+        kvs::ColorImage cube = CubeMapImage( cubic_images );
+        cube.write( "output_cube.bmp" );
+
+        kvs::ColorImage sphe = SphericalMapImage( cubic_images );
+        sphe.write( "output_sphe.bmp" );
     }
 
     return 0;

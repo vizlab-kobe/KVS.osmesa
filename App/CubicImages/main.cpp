@@ -7,20 +7,16 @@
 #include <kvs/TransferFunction>
 #include <kvs/Streamline>
 #include <kvs/Tubeline>
+#include <kvs/DivergingColorMap>
 #include <kvs/Timer>
-#include "CubicImages.h"
-#include "CubeMapImage.h"
-#include "SphericalMapImage.h"
+#include <KVS.osmesa/Lib/CubicImages.h>
 
 
 kvs::PolygonObject* GenerateStreamlines()
 {
-//    kvs::StructuredVolumeObject* volume = new kvs::TornadoVolumeData( kvs::Vec3u::All( 16 ) );
     kvs::StructuredVolumeObject* volume = new kvs::TornadoVolumeData( kvs::Vec3u::All( 32 ) );
 
     std::vector<kvs::Real32> v;
-//    kvs::Vec3i min_coord( 7, 7,  0 );
-//    kvs::Vec3i max_coord( 10, 10, 15 );
     kvs::Vec3i min_coord( 17, 17, 10 );
     kvs::Vec3i max_coord( 19, 19, 25 );
     for ( int k = min_coord.z(); k < max_coord.z(); k++ )
@@ -38,7 +34,7 @@ kvs::PolygonObject* GenerateStreamlines()
     kvs::PointObject* point = new kvs::PointObject;
     point->setCoords( kvs::ValueArray<kvs::Real32>( v ) );
 
-    const kvs::TransferFunction tfunc( 256 );
+    const kvs::TransferFunction tfunc( kvs::DivergingColorMap::CoolWarm( 256 ) );
     kvs::LineObject* line = new kvs::Streamline( volume, point, tfunc );
     line->setSize( 0.2 );
 
@@ -66,22 +62,23 @@ int main( int argc, char** argv )
 //    kvs::Vec3 p( 0.0f, 0.0f, 3.0f );
     kvs::Vec3 p( 0.0f, 0.0f, 0.0f );
     {
+        kvs::osmesa::CubicImages cubic_images;
+
         kvs::Timer timer( kvs::Timer::Start );
-        CubicImages cubic_images;
         cubic_images.draw( screen, p );
         timer.stop();
         std::cout << "Rendering cubic images: " << timer.sec() << " [sec]" << std::endl;
 
         timer.start();
-        kvs::ColorImage cube = CubeMapImage( cubic_images );
-        cube.write( "output_cube.bmp" );
+        kvs::ColorImage cube = cubic_images.cubeMapImage();
         timer.stop();
+        cube.write( "output_cube.bmp" );
         std::cout << "Generating a cube map image: " << timer.sec() << " [sec]" << std::endl;
 
         timer.start();
-        kvs::ColorImage sphe = SphericalMapImage( cubic_images );
-        sphe.write( "output_sphe.bmp" );
+        kvs::ColorImage sphe = cubic_images.sphericalMapImage();
         timer.stop();
+        sphe.write( "output_sphe.bmp" );
         std::cout << "Generating a spherical map image: " << timer.sec() << " [sec]" << std::endl;
     }
 

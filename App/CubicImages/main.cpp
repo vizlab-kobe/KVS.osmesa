@@ -7,9 +7,11 @@
 #include <kvs/TransferFunction>
 #include <kvs/Streamline>
 #include <kvs/Tubeline>
+#include <kvs/Timer>
 #include "CubicImages.h"
 #include "CubeMapImage.h"
 #include "SphericalMapImage.h"
+
 
 kvs::PolygonObject* GenerateStreamlines()
 {
@@ -64,14 +66,23 @@ int main( int argc, char** argv )
 //    kvs::Vec3 p( 0.0f, 0.0f, 3.0f );
     kvs::Vec3 p( 0.0f, 0.0f, 0.0f );
     {
+        kvs::Timer timer( kvs::Timer::Start );
         CubicImages cubic_images;
         cubic_images.draw( screen, p );
+        timer.stop();
+        std::cout << "Rendering cubic images: " << timer.sec() << " [sec]" << std::endl;
 
+        timer.start();
         kvs::ColorImage cube = CubeMapImage( cubic_images );
         cube.write( "output_cube.bmp" );
+        timer.stop();
+        std::cout << "Generating a cube map image: " << timer.sec() << " [sec]" << std::endl;
 
+        timer.start();
         kvs::ColorImage sphe = SphericalMapImage( cubic_images );
         sphe.write( "output_sphe.bmp" );
+        timer.stop();
+        std::cout << "Generating a spherical map image: " << timer.sec() << " [sec]" << std::endl;
     }
 
     return 0;

@@ -19,6 +19,7 @@ int main( int argc, char** argv )
     }
 
     kvs::glut::Screen screen2( &app );
+    screen2.setPosition( screen1.x() + screen1.width(), screen1.y() );
     screen2.show();
     {
         kvs::ImageObject* object = new kvs::ImageImporter( argv[1] );

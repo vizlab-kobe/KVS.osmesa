@@ -31,3 +31,5 @@
 *.kvs
 
 App/Test/Test
+
+App/SphericalMapViewer/SphericalMapViewer

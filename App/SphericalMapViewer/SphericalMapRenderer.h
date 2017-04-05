@@ -43,7 +43,6 @@ private:
 public:
     SphericalMapRenderer( const Type& type = SphericalMapRenderer::Centering );
     virtual ~SphericalMapRenderer();
-
     void exec( kvs::ObjectBase* object, kvs::Camera* camera, kvs::Light* light );
 
 private:

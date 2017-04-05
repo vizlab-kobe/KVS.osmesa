@@ -15,6 +15,7 @@ int main( int argc, char** argv )
         kvs::ImageObject* object = new kvs::ImageImporter( argv[1] );
         kvs::ImageRenderer* renderer = new kvs::ImageRenderer();
         screen1.registerObject( object, renderer );
+        object->print( std::cout );
     }
 
     kvs::glut::Screen screen2( &app );

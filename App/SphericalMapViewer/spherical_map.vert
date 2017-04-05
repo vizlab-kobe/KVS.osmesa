@@ -1,7 +1,9 @@
-#version 120
+#include "qualifire.h"
+
+uniform vec2 image_size;
+uniform vec2 screen_size;
 
 void main()
 {
-    gl_TexCoord[0] = gl_MultiTexCoord0;
     gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
 }

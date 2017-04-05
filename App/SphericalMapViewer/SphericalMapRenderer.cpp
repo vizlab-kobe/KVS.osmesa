@@ -55,10 +55,10 @@ void SphericalMapRenderer::exec( kvs::ObjectBase* object, kvs::Camera* camera, k
         this->create_shader_program();
     }
 
-    if ( m_type == Centering )
-    {
-        this->center_alignment( camera->windowWidth(), camera->windowHeight() );
-    }
+//    if ( m_type == Centering )
+//    {
+//        this->center_alignment( camera->windowWidth(), camera->windowHeight() );
+//    }
 
     BaseClass::startTimer();
 
@@ -74,6 +74,8 @@ void SphericalMapRenderer::exec( kvs::ObjectBase* object, kvs::Camera* camera, k
         kvs::Texture::Binder unit( m_texture, 0 );
 
         m_shader_program.setUniform( "spherical_map", 0 );
+        m_shader_program.setUniform( "image_size", kvs::Vec2( image->width(), image->height() ) );
+        m_shader_program.setUniform( "screen_size", kvs::Vec2( camera->windowWidth(), camera->windowHeight() ) );
 
         kvs::OpenGL::WithPushedMatrix p1( GL_MODELVIEW );
         p1.loadIdentity();

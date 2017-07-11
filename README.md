@@ -1,6 +1,6 @@
 KVS.osmesa
 ===
-KVS.osmesa is a off-screen rendering framework with OSMesa for KVS.
+KVS.osmesa is an off-screen rendering framework with OSMesa for KVS.
 
 # Prerequisite
 The following software packages are needed to compile KVS.osmesa.

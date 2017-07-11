@@ -11,7 +11,7 @@ OSMesa must be installed in your computing environment before compiling KVS.osme
 - [OSMesa](https://www.mesa3d.org/osmesa.html)
 
 #### Mac OS X
-In case of Mac OS X, OSMesa will be installed by installing XQuartz. You can dowload it from the following URL.
+In case of Mac OS X environment, OSMesa will be installed by installing XQuartz. You can dowload it from the following URL.
 
 - [XQuartz](https://www.xquartz.org)
 

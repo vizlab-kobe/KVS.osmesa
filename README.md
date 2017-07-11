@@ -1,10 +1,11 @@
-# KVS.osmesa
+KVS.osmesa
+===
 KVS.osmesa is a off-screen rendering framework with OSMesa for KVS.
 
-## Prerequisite
+# Prerequisite
 The following software packages are needed to compile KVS.osmesa.
 
-### OSMesa
+## OSMesa
 OSMesa must be installed in your computing environment before compiling KVS.osmesa.
 
 - [OSMesa](https://www.mesa3d.org/osmesa.html)
@@ -20,7 +21,7 @@ The environment variable ```KVS_OSMESA_DIR``` should be set to an install direct
 export KVS_OSMESA_DIR=/usr/X11
 ```
 
-### OSMesa-enabled KVS
+## OSMesa-enabled KVS
 The source code of KVS can be downloaded via GitHub as follows:
 
 ```
@@ -40,7 +41,7 @@ OSMesa-enabled KVS can be compiled as follows:
 $ cd KVS
 ```
 
-1. Modify ```kvs.conf``` as follows
+2. Modify ```kvs.conf``` as follows
 ```
 KVS_ENABLE_OPENGL     = 1
 KVS_ENABLE_OSMESA     = 1
@@ -56,7 +57,7 @@ KVS_SUPPORT_QT        = 0
 KVS_SUPPORT_PYTHON    = 0
 ```
 
-1. Compile and install KVS
+3. Build and install KVS
 ```
 $ make
 $ make install

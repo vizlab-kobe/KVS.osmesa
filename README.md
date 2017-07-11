@@ -78,4 +78,10 @@ $ ./kvsmake.py
 ```
 
 ## Test
-Several test programs with KVS.osmesa can be found in the App directory.
+Several test programs with KVS.osmesa can be found in the App directory. Each of the programs can be easily compiled with kvsmake command.
+```
+$ cd App
+$ cd Test
+$ kvsmake -G
+$ kvsmake
+```

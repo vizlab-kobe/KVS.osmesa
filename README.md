@@ -62,3 +62,20 @@ KVS_SUPPORT_PYTHON    = 0
 $ make
 $ make install
 ```
+
+# Installation
+You can get the source codes of KVS.osmesa from GitHub.
+```
+$ git clone https://github.com/vizlab-kobe/KVS.osmesa.git
+```
+
+## Build
+First of all, you need to build a library with a python script.
+```
+$ cd KVS.osmesa
+$ cd Lib
+$ ./kvsmake.py
+```
+
+## Test
+Several test programs with KVS.osmesa can be found in the App directory.

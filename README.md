@@ -86,7 +86,7 @@ $ kvsmake -G
 $ kvsmake
 ```
 
-This program generates resulting 12 images rendered with a volume rendering technique.
+This program generates 12 resulting images rendered with a volume rendering technique.
 ```
 $ ./Test
 OSMesa version: 11.2.0

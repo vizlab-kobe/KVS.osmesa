@@ -85,3 +85,21 @@ $ cd Test
 $ kvsmake -G
 $ kvsmake
 ```
+
+This program generates resulting 12 images rendered with a volume rendering technique.
+```
+$ ./Test
+OSMesa version: 11.2.0
+rendering to ... output_000.bmp
+rendering to ... output_001.bmp
+rendering to ... output_002.bmp
+rendering to ... output_003.bmp
+rendering to ... output_004.bmp
+rendering to ... output_005.bmp
+rendering to ... output_006.bmp
+rendering to ... output_007.bmp
+rendering to ... output_008.bmp
+rendering to ... output_009.bmp
+rendering to ... output_010.bmp
+rendering to ... output_011.bmp
+```

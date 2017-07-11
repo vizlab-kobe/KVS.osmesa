@@ -21,7 +21,7 @@ The environment variable ```KVS_OSMESA_DIR``` should be set to an install direct
 export KVS_OSMESA_DIR=/usr/X11
 ```
 
-## OSMesa-enabled KVS
+## KVS based on OSMesa GL implementation
 The source code of KVS can be downloaded via GitHub as follows:
 
 ```

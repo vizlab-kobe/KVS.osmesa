@@ -8,6 +8,82 @@ namespace kvs
 namespace osmesa
 {
 
+void Context::SetPixelStore( GLint pname, GLint value )
+{
+    OSMesaPixelStore( pname, value );
+}
+
+void Context::SetRowLength( GLint value )
+{
+    Context::SetPixelStore( OSMESA_ROW_LENGTH, value );
+}
+
+void Context::SetYAxisDirection( GLint value )
+{
+    // value: zero = Y coordinates increase downward,
+    //        non-zero = Y coordinates increase upward
+    Context::SetPixelStore( OSMESA_Y_UP, value );
+}
+
+void Context::SetYAxisDirectionToDown()
+{
+    Context::SetYAxisDirection( 0 );
+}
+
+void Context::SetYAxisDirectionToUp()
+{
+    Context::SetYAxisDirection( 1 );
+}
+
+void Context::GetIntegerv( GLint pname, GLint* value )
+{
+    OSMesaGetIntegerv( pname, value );
+}
+
+GLint Context::GetWidth()
+{
+    GLint value = 0;
+    Context::GetIntegerv( OSMESA_WIDTH, &value );
+    return value;
+}
+
+GLint Context::GetHeight()
+{
+    GLint value = 0;
+    Context::GetIntegerv( OSMESA_HEIGHT, &value );
+    return value;
+}
+
+GLint Context::GetFormat()
+{
+    GLint value = 0;
+    Context::GetIntegerv( OSMESA_FORMAT, &value );
+    return value;
+}
+
+GLint Context::GetType()
+{
+    GLint value = 0;
+    Context::GetIntegerv( OSMESA_TYPE, &value );
+    return value;
+}
+
+GLint Context::GetRowLength()
+{
+    GLint value = 0;
+    Context::GetIntegerv( OSMESA_ROW_LENGTH, &value );
+    return value;
+}
+
+GLint Context::GetYAxisDirection()
+{
+    // value: zero = Y coordinates increase downward,
+    //        non-zero = Y coordinates increase upward
+    GLint value = 0;
+    Context::GetIntegerv( OSMESA_Y_UP, &value );
+    return value;
+}
+
 /*===========================================================================*/
 /**
  *  @brief  Construct a Context class.

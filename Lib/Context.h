@@ -13,6 +13,21 @@ namespace osmesa
 
 class Context
 {
+public:
+    static void SetPixelStore( GLint pname, GLint value );
+    static void SetRowLength( GLint value );
+    static void SetYAxisDirection( GLint value );
+    static void SetYAxisDirectionToDown();
+    static void SetYAxisDirectionToUp();
+
+    static void GetIntegerv( GLint pname, GLint* value );
+    static GLint GetWidth();
+    static GLint GetHeight();
+    static GLint GetFormat();
+    static GLint GetType();
+    static GLint GetRowLength();
+    static GLint GetYAxisDirection();
+
 private:
     OSMesaContext m_handle;
 

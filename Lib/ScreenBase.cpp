@@ -67,7 +67,8 @@ void ScreenBase::create()
         return;
     }
 
-    OSMesaPixelStore( OSMESA_Y_UP, 0 ); // Y coordinates increase downward
+    // Y coordinates increase downward
+    kvs::osmesa::Context::SetYAxisDirectionToDown();
 
     this->initializeEvent();
 }

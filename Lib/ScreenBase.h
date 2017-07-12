@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OSMesa.h"
+#include "Context.h"
 #include <kvs/ScreenBase>
 #include <kvs/ValueArray>
 #include <kvs/ColorImage>
@@ -17,12 +18,10 @@ class ScreenBase : public kvs::ScreenBase
     typedef kvs::ScreenBase BaseClass;
 
 private:
-
-    OSMesaContext m_context; ///< OSMesa context
+    kvs::osmesa::Context m_context; ///< OSMesa rendering context
     kvs::ValueArray<kvs::UInt8> m_buffer; ///< frame buffer
 
 public:
-
     ScreenBase();
     virtual ~ScreenBase();
 

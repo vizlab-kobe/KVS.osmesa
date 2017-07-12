@@ -9,18 +9,12 @@ namespace kvs
 namespace osmesa
 {
 
-ScreenBase::ScreenBase():
-    m_context( NULL )
+ScreenBase::ScreenBase()
 {
 }
 
 ScreenBase::~ScreenBase()
 {
-    if ( m_context )
-    {
-        OSMesaDestroyContext( m_context );
-        m_context = NULL;
-    }
 }
 
 kvs::ColorImage ScreenBase::capture() const
@@ -42,7 +36,7 @@ kvs::ColorImage ScreenBase::capture() const
 
 void ScreenBase::draw()
 {
-    if ( !m_context ) { this->create(); }
+    if ( !m_context.isValid() ) { this->create(); }
     this->paintEvent();
 }
 
@@ -53,8 +47,8 @@ void ScreenBase::create()
     const GLint depth_bits = 24;
     const GLint stencil_bits = 0;
     const GLint accum_bits = 0;
-    m_context = OSMesaCreateContextExt( format, depth_bits, stencil_bits, accum_bits, NULL );
-    if ( !m_context )
+    m_context.create( format, depth_bits, stencil_bits, accum_bits );
+    if ( !m_context.isValid() )
     {
         kvsMessageError( "Cannot create OSMesa context." );
         return;
@@ -66,8 +60,8 @@ void ScreenBase::create()
     m_buffer.allocate( width * height * 4 );
     m_buffer.fill( 0 );
 
-    // Bind the buffer to the context
-    if ( !OSMesaMakeCurrent( m_context, m_buffer.data(), GL_UNSIGNED_BYTE, width, height) )
+    // Bind the context to the buffer
+    if ( !m_context.makeCurrent( m_buffer, width, height ) )
     {
         kvsMessageError( "Cannot bind buffer." );
         return;
@@ -80,7 +74,7 @@ void ScreenBase::create()
 
 void ScreenBase::show()
 {
-    if ( !m_context ) { this->create(); }
+    if ( !m_context.isValid() ) { this->create(); }
 }
 
 void ScreenBase::redraw()

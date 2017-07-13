@@ -2,6 +2,7 @@
 
 #include "OSMesa.h"
 #include "Context.h"
+#include "Surface.h"
 #include <kvs/ScreenBase>
 #include <kvs/ValueArray>
 #include <kvs/ColorImage>
@@ -19,13 +20,13 @@ class ScreenBase : public kvs::ScreenBase
 
 private:
     kvs::osmesa::Context m_context; ///< OSMesa rendering context
-    kvs::ValueArray<kvs::UInt8> m_buffer; ///< frame buffer
+    kvs::osmesa::Surface m_surface; ///< OSMesa drawing surface
 
 public:
     ScreenBase();
     virtual ~ScreenBase();
 
-    const kvs::ValueArray<kvs::UInt8>& buffer() const { return m_buffer; }
+    const kvs::ValueArray<kvs::UInt8>& buffer() const { return m_surface.buffer(); }
     kvs::ColorImage capture() const;
     void draw();
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "OSMesa.h"
+#include "Surface.h"
 #include <kvs/ValueArray>
 #include <kvs/Type>
 
@@ -40,7 +41,7 @@ public:
 
     bool create( GLenum format, GLint depth_bits, GLint stencil_bits, GLint accum_bits );
     void destroy();
-    bool makeCurrent( kvs::ValueArray<kvs::UInt8>& buffer, GLsizei width, GLsizei height );
+    bool makeCurrent( kvs::osmesa::Surface& surface );
     void releaseCurrent();
 };
 

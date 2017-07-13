@@ -152,9 +152,12 @@ void Context::destroy()
  *          width>internal limit or height>internal limit
  */
 /*===========================================================================*/
-bool Context::makeCurrent( kvs::ValueArray<kvs::UInt8>& buffer, GLsizei width, GLsizei height )
+bool Context::makeCurrent( kvs::osmesa::Surface& surface )
 {
-    GLboolean status = OSMesaMakeCurrent( m_handle, buffer.data(), GL_UNSIGNED_BYTE, width, height);
+    kvs::UInt8* buffer = const_cast<kvs::UInt8*>( surface.buffer().data() );
+    GLsizei width = surface.width();
+    GLsizei height = surface.height();
+    GLboolean status = OSMesaMakeCurrent( m_handle, buffer, GL_UNSIGNED_BYTE, width, height );
     return status == GL_TRUE;
 }
 

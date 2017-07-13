@@ -23,12 +23,13 @@ kvs::ColorImage ScreenBase::capture() const
     const size_t height = BaseClass::height();
 
     // RGBA to RGB
+    const kvs::ValueArray<kvs::UInt8>& buffer = m_surface.buffer();
     kvs::ValueArray<kvs::UInt8> pixels( width * height * 3 );
     for ( size_t i = 0; i < width * height; i++ )
     {
-        pixels[ 3 * i + 0 ] = m_buffer[ 4 * i + 0 ];
-        pixels[ 3 * i + 1 ] = m_buffer[ 4 * i + 1 ];
-        pixels[ 3 * i + 2 ] = m_buffer[ 4 * i + 2 ];
+        pixels[ 3 * i + 0 ] = buffer[ 4 * i + 0 ];
+        pixels[ 3 * i + 1 ] = buffer[ 4 * i + 1 ];
+        pixels[ 3 * i + 2 ] = buffer[ 4 * i + 2 ];
     }
 
     return kvs::ColorImage( width, height, pixels );
@@ -54,14 +55,13 @@ void ScreenBase::create()
         return;
     }
 
-    // Allocate memory for the buffer
+    // Create OSMesa drawing surface
     const GLsizei width = GLsizei( BaseClass::width() );
     const GLsizei height = GLsizei( BaseClass::height() );
-    m_buffer.allocate( width * height * 4 );
-    m_buffer.fill( 0 );
+    m_surface.create( width, height, format );
 
-    // Bind the context to the buffer
-    if ( !m_context.makeCurrent( m_buffer, width, height ) )
+    // Bind the context to the surface
+    if ( !m_context.makeCurrent( m_surface ) )
     {
         kvsMessageError( "Cannot bind buffer." );
         return;

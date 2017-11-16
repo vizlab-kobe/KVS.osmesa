@@ -109,3 +109,10 @@ rendering to ... output_009.bmp
 rendering to ... output_010.bmp
 rendering to ... output_011.bmp
 ```
+
+## Note
+
+Gallium softpipe driver doesn't support "upside-down" rendering which would be needed for the OSMESA_Y_UP=TRUE case. Therefore, the rendering pixel data need to be flipped. In the current implementation, it is necessary to specify the gallium driver "softpipe" or "llvmpipe" by using environment parameter 'KVS_OSMESA_GALLIUM_DRIVER'.
+```
+e.g.) export KVS_OSMESA_GALLIUM_DRIVER=softpipe
+```

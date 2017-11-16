@@ -28,6 +28,8 @@ public:
 
     const kvs::ValueArray<kvs::UInt8>& buffer() const { return m_surface.buffer(); }
     kvs::ColorImage capture() const;
+    kvs::ValueArray<kvs::UInt8> readbackColorBuffer() const;
+    kvs::ValueArray<kvs::Real32> readbackDepthBuffer() const;
     void draw();
 
     virtual void create();

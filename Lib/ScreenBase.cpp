@@ -12,9 +12,10 @@ inline void Flip( T* data, const size_t width, const size_t height, const size_t
 {
     // NOTE: Gallium softpipe driver doesn't support "upside-down" rendering
     // which would be needed for the OSMESA_Y_UP=TRUE case. Therefore, the
-    // rendering pixel data need to be flipped. In the current implementation,
-    // it is necessary to specify the gallium driver "softpipe" or "llvmpipe"
-    // by environment parameter 'KVS_OSMESA_GALLIUM_DRIVER'.
+    // rendering pixel data read backed from GPU with glReadPixels need to be
+    // flipped. In the current implementation, it is necessary to specify the
+    // gallium driver "softpipe" or "llvmpipe" by environment parameter
+    // 'KVS_OSMESA_GALLIUM_DRIVER'.
     // e.g.) export KVS_OSMESA_GALLIUM_DRIVER=softpipe
     //
     const char* driver( std::getenv( "KVS_OSMESA_GALLIUM_DRIVER" ) );
@@ -62,10 +63,8 @@ kvs::ColorImage ScreenBase::capture() const
     const size_t width = BaseClass::width();
     const size_t height = BaseClass::height();
 
-    const kvs::ValueArray<kvs::UInt8>& buffer = m_surface.buffer();
-    ::Flip( (kvs::UInt8*)buffer.data(), width, height, 4 );
-
     // RGBA to RGB
+    const kvs::ValueArray<kvs::UInt8>& buffer = m_surface.buffer();
     kvs::ValueArray<kvs::UInt8> pixels( width * height * 3 );
     for ( size_t i = 0; i < width * height; i++ )
     {
@@ -82,9 +81,11 @@ kvs::ValueArray<kvs::UInt8> ScreenBase::readbackColorBuffer() const
     kvs::OpenGL::SetReadBuffer( GL_FRONT );
     kvs::OpenGL::SetPixelStorageMode( GL_PACK_ALIGNMENT, GLint(1) );
 
-    kvs::ValueArray<kvs::UInt8> buffer( this->width() * this->height() * 4 );
-    kvs::OpenGL::ReadPixels( 0, 0, this->width(), this->height(), GL_RGBA, GL_UNSIGNED_BYTE, buffer.data() );
-   ::Flip( buffer.data(), this->width(), this->height(), 4 );
+    const size_t width = this->width();
+    const size_t height = this->height();
+    kvs::ValueArray<kvs::UInt8> buffer( width * height * 4 );
+    kvs::OpenGL::ReadPixels( 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer.data() );
+   ::Flip( buffer.data(), width, height, 4 );
 
     return buffer;
 }
@@ -94,9 +95,11 @@ kvs::ValueArray<kvs::Real32> ScreenBase::readbackDepthBuffer() const
     kvs::OpenGL::SetReadBuffer( GL_FRONT );
     kvs::OpenGL::SetPixelStorageMode( GL_PACK_ALIGNMENT, GLint(1) );
 
-    kvs::ValueArray<kvs::Real32> buffer( this->width() * this->height() );
-    kvs::OpenGL::ReadPixels( 0, 0, this->width(), this->height(), GL_DEPTH_COMPONENT, GL_FLOAT, buffer.data() );
-    ::Flip( buffer.data(), this->width(), this->height(), 1 );
+    const size_t width = this->width();
+    const size_t height = this->height();
+    kvs::ValueArray<kvs::Real32> buffer( width * height );
+    kvs::OpenGL::ReadPixels( 0, 0, width, height, GL_DEPTH_COMPONENT, GL_FLOAT, buffer.data() );
+    ::Flip( buffer.data(), width, height, 1 );
 
     return buffer;
 }
